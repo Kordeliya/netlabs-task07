@@ -32,18 +32,14 @@ namespace Logging
 
         public override void Write(string message)
         {
-            if (_newArticle.Count > 0)
-            {
-                string oldMessage = _newArticle.Last().Message;
-                _newArticle.Last().Message = String.Format("{0}, {1}", oldMessage, message);
-            }
-            else
-                this.WriteLine(message);
+            var newLine = new Logger(message);
+            _newArticle.Add(newLine);
         }
 
         public override void WriteLine(string message)
         {
-            _newArticle.Add(new Logger { Message = message, CreateDate = DateTime.Now });
+            _newArticle.Last().Message = message;
+            _newArticle.Last().CreateDate = DateTime.Now;
             CurrentCall++;
 
             if (NCall == CurrentCall)
