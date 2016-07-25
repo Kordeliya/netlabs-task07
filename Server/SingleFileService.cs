@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Server
 {
+    /// <summary>
+    /// Класс синглтон для файловой системы
+    /// </summary>
     public class SingleFileService
     {
         private static readonly object _instanceLock = new object();
@@ -36,9 +39,6 @@ namespace Server
             }
             return _instance;
         }
-
-
-
 
     }
 }

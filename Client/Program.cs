@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -14,12 +15,11 @@ namespace Client
     {
         public static void Main(string[] args)
         {
-            
+
             ClientConnection _client;
             HttpResponseMessage response;
             try
             {
-                DateTime date = new DateTime(1991, 25, 1);
                 while (true)
                 {
                     Console.Write(">");
