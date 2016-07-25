@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FileSystemServices.Entities;
+using ResponseMessages;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -155,20 +157,23 @@ namespace Client
                                 else
                                     ClientHelper.WriteErrorMessage();
                                 break;
-                            //case "print":
-                            //    if (CheckCountArgs(commandArgs, 2))
-                            //    {
-                            //        FacadeFolder folder = null;
-                            //        if (_instance.TryGetTree(commandArgs[1], currentDirectory,out folder, out error))
-                            //        {
-                            //            PrintTree(folder);
-                            //        }
-                            //        else
-                            //            Console.WriteLine(">Произошла ошибка:{0}", error);
-                            //    }
-                            //    else
-                            //        WriteErrorMessage();
-                            //    break;
+                            case "print":
+                                if (ClientHelper.CheckCountArgs(commandArgs, 2))
+                                {
+                                    using (_client = new ClientConnection())
+                                    {
+                                        var content = new FormUrlEncodedContent(new[]
+                                        {
+                                            new KeyValuePair<string, string>("path",  commandArgs[1]),
+                                        });
+                                        response = _client.SendRequest(content, "print").Result;
+                                        Folder folder = (Folder)CheckResponse<FileSystemElement>(response);
+                                       // ClientHelper.Print(folder);
+                                    }
+                                }
+                                else
+                                    ClientHelper.WriteErrorMessage();
+                                break;
                             default:
                                 Console.WriteLine(">Команда не распознана");
                                 break;
@@ -178,8 +183,9 @@ namespace Client
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine("произошла ошибка {0}", ex.Message);
             }
+            Console.ReadKey();
         }
 
         /// <summary>
@@ -201,6 +207,24 @@ namespace Client
             }
             else
                 Console.WriteLine(">Произошла неизвестная ошибка");
+        }
+
+        private static T CheckResponse<T>(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                ResponseFileService<T> responseXml = new ResponseFileService<T>();
+                // response.Content
+                XmlSerializer serializer = new XmlSerializer(typeof(ResponseFileService<T>));
+                Stream xmlStream = ((StreamContent)response.Content).ReadAsStreamAsync().Result;
+                responseXml = (ResponseFileService<T>)serializer.Deserialize(xmlStream);
+                if (!responseXml.IsSuccess)
+                    Console.WriteLine(">{0}", responseXml.Error ?? "Произошла неизвестная ошибка");
+                return responseXml.Data;
+            }
+            else
+                Console.WriteLine(">Произошла неизвестная ошибка");
+            return default(T);
         }
 
        

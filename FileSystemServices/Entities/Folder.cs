@@ -9,6 +9,12 @@ namespace FileSystemServices.Entities
     [Serializable]
     public class Folder : FileSystemElement
     {
+
+        public Folder()
+            : base()
+        {
+        }
+
         public Folder(string name)
             : base(name)
         {

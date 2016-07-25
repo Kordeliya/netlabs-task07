@@ -1,5 +1,6 @@
 ﻿using FileSystemServices;
 using FileSystemServices.Entities;
+using ResponseMessages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +23,7 @@ namespace Server
         public static byte[] GetResponseBytes(HttpListenerRequest request)
         {
             string paramRequest = String.Empty;
+            XmlSerializer serializer = null;
             ResponseFileService result = new ResponseFileService();
             byte[] buffer = null;
             if (!request.HasEntityBody)
@@ -36,8 +38,15 @@ namespace Server
             string command = request.RawUrl.Replace(@"/", String.Empty);
 
             result = QueryExecution(command, paramRequest);
+            if (result is ResponseFileService<FileSystemElement>)
+            {              
+                serializer = new XmlSerializer(typeof(ResponseFileService<FileSystemElement>));
+            }
+            else
+            {
+                serializer = new XmlSerializer(typeof(ResponseFileService));
+            }
 
-            XmlSerializer serializer = new XmlSerializer(typeof(ResponseFileService));
             using (MemoryStream ms = new MemoryStream())
             {
                 serializer.Serialize(ms, result);
@@ -113,6 +122,18 @@ namespace Server
                             result = new ResponseFileService
                             {
                                 IsSuccess = true
+                            };
+                            break;
+                        case "print":
+                            path = GetPath(paramRequest);
+                            if (path == null)
+                                return null;
+                            systemPath = new FileSystemPath(path[0]);
+                            FileSystemElement folder = facade.Disk.GetTree(systemPath);
+                            result = new ResponseFileService<FileSystemElement>
+                            {
+                                IsSuccess = true,
+                                Data = folder
                             };
                             break;
                     }

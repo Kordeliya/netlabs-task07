@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace FileSystemServices.Entities
 {
+    [Serializable]
     public class FileItem : FileSystemElement
     {
+        public FileItem()
+            :base()
+        {
+        }
+
         public FileItem(string name)
             : base(name)
         {

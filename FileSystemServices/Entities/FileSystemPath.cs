@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace FileSystemServices
 {
+    [Serializable]
     public class FileSystemPath
     {
         public FileSystemPath(string path)

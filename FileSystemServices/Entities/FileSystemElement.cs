@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace FileSystemServices.Entities
 {
+    [Serializable]
     public class FileSystemElement
     {
+        public FileSystemElement()
+        {
+        }
+
         public FileSystemElement(string name)
         {
             Name = name;

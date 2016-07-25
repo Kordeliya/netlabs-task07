@@ -13,16 +13,6 @@ namespace Server
         static void Main(string[] args)
         {
             Trace.TraceInformation("StartServer");
-            Trace.TraceInformation("StartServer");
-            Trace.TraceInformation("StartServer");
-            Trace.TraceInformation("StartServer");
-            Trace.TraceInformation("StartServer");
-            Trace.TraceInformation("StartServer");
-            Trace.TraceInformation("StartServer");
-            Trace.TraceInformation("StartServer");
-            Trace.TraceInformation("StartServer");
-            Trace.TraceInformation("StartServer");
-            Trace.TraceInformation("StartServer");
             string url = "http://localhost:6740/";
             DbTraceListener list = new DbTraceListener("loggerSetting");
             list.Write(new object(),"");
