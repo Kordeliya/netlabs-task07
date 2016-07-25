@@ -8,13 +8,11 @@ using VirtualFileSystem.Entities;
 
 namespace VirtualFileSystem
 {
-    /// <summary>
-    /// Виртуальный диск
-    /// </summary>
-    public class VirtualDisk : Folder
-    {
-        public VirtualDisk(string name) : base(name)
-        {
-        }
-    }
+    ///// <summary>
+    ///// Виртуальный диск
+    ///// </summary>
+    //public class VirtualDisk : IVirtualFileSystem
+    //{
+    //    public List<FileSystemElement> Elements { get; set; }
+    //}
 }
