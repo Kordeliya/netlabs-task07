@@ -13,6 +13,7 @@ namespace DALLogs.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         CreateDate = c.DateTime(nullable: false),
+                        Type = c.String(maxLength: 4000),
                         Message = c.String(maxLength: 4000),
                     })
                 .PrimaryKey(t => t.Id);
