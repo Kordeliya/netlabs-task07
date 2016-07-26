@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Logging
 {
+    /// <summary>
+    /// Класс прослушивателя пишущий в базу
+    /// </summary>
     public class DbTraceListener : TraceListener
     {
         MappingContext _context = null;

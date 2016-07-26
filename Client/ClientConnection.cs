@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Client
 {
+    /// <summary>
+    /// Класс подключения для клиента
+    /// </summary>
     public class ClientConnection : IDisposable
     {
         HttpClient _client;
@@ -25,12 +28,17 @@ namespace Client
             _client.Dispose();
 
         }
-
+        /// <summary>
+        /// Отправка запроса
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         public async Task<HttpResponseMessage> SendRequest(HttpContent content, string uri)
         {
             _response = await _client.PostAsync(uri, content);
             return _response;
-        }
+        }      
 
     }
 }

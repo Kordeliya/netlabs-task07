@@ -38,9 +38,9 @@ namespace Server
             string command = request.RawUrl.Replace(@"/", String.Empty);
 
             result = QueryExecution(command, paramRequest);
-            if (result is ResponseFileService<FileSystemElement>)
+            if (result is ResponseFileService<Folder>)
             {              
-                serializer = new XmlSerializer(typeof(ResponseFileService<FileSystemElement>));
+                serializer = new XmlSerializer(typeof(ResponseFileService<Folder>));
             }
             else
             {
@@ -129,8 +129,8 @@ namespace Server
                             if (path == null)
                                 return null;
                             systemPath = new FileSystemPath(path[0]);
-                            FileSystemElement folder = facade.Disk.GetTree(systemPath);
-                            result = new ResponseFileService<FileSystemElement>
+                            Folder folder = (Folder)facade.Disk.GetTree(systemPath);
+                            result = new ResponseFileService<Folder>
                             {
                                 IsSuccess = true,
                                 Data = folder

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ServicesImplements
 {
+    /// <summary>
+    /// Класс реализующий виртуальный файловый сервер
+    /// </summary>
     public class LocalFileSystem : IVirtualFileSystem
     {
         public LocalFileSystem()
@@ -168,6 +171,11 @@ namespace ServicesImplements
             }
         }
 
+        /// <summary>
+        /// Перемещение
+        /// </summary>
+        /// <param name="pathSource">путь к источнику</param>
+        /// <param name="pathDestination">путь к месту назначения</param>
         public void Move(FileSystemPath pathSource, FileSystemPath pathDestination)
         {
             Trace.TraceInformation("Move from {0} to {1}", pathSource, pathDestination);
@@ -175,6 +183,11 @@ namespace ServicesImplements
             this.Delete(pathSource);
         }
 
+        /// <summary>
+        /// Получение дерева
+        /// </summary>
+        /// <param name="path">путь к элементу</param>
+        /// <returns></returns>
         public FileSystemElement GetTree(FileSystemPath path)
         {
             Trace.TraceInformation("GetTree: {0}", path);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileSystemServices.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -18,18 +19,6 @@ namespace Client
             client.MaxResponseContentBufferSize = 1024 * 1024 * 8;
             return client;
         }
-
-
-
-
-        ///// <summary>
-        ///// Информация о дереве
-        ///// </summary>
-        ///// <param name="folder"></param>
-        //private static void PrintTree(FacadeFolder folder)
-        //{
-        //    Console.WriteLine("Данная директория содержит {0} папок, {1} файлов", folder.Directories.Count(), folder.Files.Count());
-        //}
 
         /// <summary>
         /// Вывод сообщения об ошибке
@@ -110,6 +99,30 @@ namespace Client
         {
             Regex regex = new Regex(@"[\s\S]*\.[a-z0-9]{2,7}");
             return regex.IsMatch(path);
+        }
+
+
+        /// <summary>
+        /// Информация о дереве
+        /// </summary>
+        /// <param name="folder"></param>
+        public static void PrintTree(FileSystemElement folder)
+        {
+            int countFiles = 0;
+            int countFolders = 0;
+            if (folder != null)
+            {
+                foreach (var item in ((Folder)folder).Elements)
+                {
+                    if (item is Folder)
+                        countFolders++;
+                    else
+                        countFiles++;
+                }
+                Console.WriteLine("Данная директория содержит {0} папок, {1} файлов", countFolders, countFiles);
+            }
+            else
+                Console.WriteLine("Директория не найдена!");
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Client
                                             new KeyValuePair<string, string>("path",  commandArgs[1]),
                                         });
                                         response = _client.SendRequest(content, "md").Result;
-                                        CheckResponse(response);
+                                        ClientChecker.CheckResponse(response);
                                     }
 
                                 }
@@ -74,7 +74,7 @@ namespace Client
                                             new KeyValuePair<string, string>("path",  commandArgs[1]),
                                         });
                                         response = _client.SendRequest(content, "rd").Result;
-                                        CheckResponse(response);
+                                        ClientChecker.CheckResponse(response);
                                     }
                                 }
                                 else
@@ -95,7 +95,7 @@ namespace Client
                                             new KeyValuePair<string, string>("path",  commandArgs[1]),
                                         });
                                         response = _client.SendRequest(content, "mf").Result;
-                                        CheckResponse(response);
+                                        ClientChecker.CheckResponse(response);
                                     }
 
                                 }
@@ -117,7 +117,7 @@ namespace Client
                                             new KeyValuePair<string, string>("path",  commandArgs[1]),
                                         });
                                         response = _client.SendRequest(content, "del").Result;
-                                        CheckResponse(response);
+                                        ClientChecker.CheckResponse(response);
                                     }
                                 }
                                 else
@@ -134,7 +134,7 @@ namespace Client
                                             new KeyValuePair<string, string>("pathDest",  commandArgs[2]),
                                         });
                                         response = _client.SendRequest(content, "copy").Result;
-                                        CheckResponse(response);
+                                        ClientChecker.CheckResponse(response);
                                     }
                                 }
                                 else
@@ -151,7 +151,7 @@ namespace Client
                                             new KeyValuePair<string, string>("pathDest",  commandArgs[2]),
                                         });
                                         response = _client.SendRequest(content, "move").Result;
-                                        CheckResponse(response);
+                                        ClientChecker.CheckResponse(response);
                                     }
                                 }
                                 else
@@ -167,8 +167,8 @@ namespace Client
                                             new KeyValuePair<string, string>("path",  commandArgs[1]),
                                         });
                                         response = _client.SendRequest(content, "print").Result;
-                                        Folder folder = (Folder)CheckResponse<FileSystemElement>(response);
-                                       // ClientHelper.Print(folder);
+                                        Folder folder = (Folder)ClientChecker.CheckResponse<Folder>(response);
+                                        ClientHelper.PrintTree(folder);
                                     }
                                 }
                                 else
@@ -186,47 +186,6 @@ namespace Client
                 Console.WriteLine("произошла ошибка {0}", ex.Message);
             }
             Console.ReadKey();
-        }
-
-        /// <summary>
-        /// Проверка ответа от сервера
-        /// </summary>
-        /// <param name="response"></param>
-        private static void CheckResponse(HttpResponseMessage response)
-        {
-            if (response.IsSuccessStatusCode)
-            {
-                ResponseFileService responseXml = new ResponseFileService();
-               // response.Content
-                XmlSerializer serializer = new XmlSerializer(typeof(ResponseFileService));
-                Stream xmlStream = ((StreamContent)response.Content).ReadAsStreamAsync().Result;
-                responseXml = (ResponseFileService)serializer.Deserialize(xmlStream);
-                if(!responseXml.IsSuccess)
-                    Console.WriteLine(">{0}", responseXml.Error ?? "Произошла неизвестная ошибка");
-
-            }
-            else
-                Console.WriteLine(">Произошла неизвестная ошибка");
-        }
-
-        private static T CheckResponse<T>(HttpResponseMessage response)
-        {
-            if (response.IsSuccessStatusCode)
-            {
-                ResponseFileService<T> responseXml = new ResponseFileService<T>();
-                // response.Content
-                XmlSerializer serializer = new XmlSerializer(typeof(ResponseFileService<T>));
-                Stream xmlStream = ((StreamContent)response.Content).ReadAsStreamAsync().Result;
-                responseXml = (ResponseFileService<T>)serializer.Deserialize(xmlStream);
-                if (!responseXml.IsSuccess)
-                    Console.WriteLine(">{0}", responseXml.Error ?? "Произошла неизвестная ошибка");
-                return responseXml.Data;
-            }
-            else
-                Console.WriteLine(">Произошла неизвестная ошибка");
-            return default(T);
-        }
-
-       
+        }     
     }
 }
