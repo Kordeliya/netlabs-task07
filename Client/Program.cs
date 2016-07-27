@@ -1,4 +1,5 @@
-﻿using FileSystemServices.Entities;
+﻿using FileSystemServices;
+using FileSystemServices.Entities;
 using ResponseMessages;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Client
         {
 
             ClientConnection _client;
+            FileSystemProxy _proxy = new FileSystemProxy(); ;
             HttpResponseMessage response;
             try
             {
@@ -45,15 +47,20 @@ namespace Client
                                         ClientHelper.WriteErrorMessage();
                                         continue;
                                     }
-                                    using (_client = new ClientConnection())
-                                    {
-                                        var content = new FormUrlEncodedContent(new[]
-                                        {
-                                            new KeyValuePair<string, string>("path",  commandArgs[1]),
-                                        });
-                                        response = _client.SendRequest(content, "md").Result;
-                                        ClientChecker.CheckResponse(response);
-                                    }
+                                    FileSystemPath path = new FileSystemPath(commandArgs[1]);
+                                    _proxy.Create(path,new FileItem(path.Segments.Last()));
+
+
+
+                                    //using (_client = new ClientConnection())
+                                    //{
+                                    //    var content = new FormUrlEncodedContent(new[]
+                                    //    {
+                                    //        new KeyValuePair<string, string>("path",  commandArgs[1]),
+                                    //    });
+                                    //    response = _client.SendRequest(content, "md").Result;
+                                    //    ClientChecker.CheckResponse(response);
+                                    //}
 
                                 }
                                 else

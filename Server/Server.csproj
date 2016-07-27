@@ -89,10 +89,6 @@
       <Project>{b31466b5-99f0-492d-80e8-6fdabef84b1b}</Project>
       <Name>Logging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ResponseMessages\ResponseMessages.csproj">
-      <Project>{4c9a30e3-e27e-4aae-9bba-a493b556ac9b}</Project>
-      <Name>ResponseMessages</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ServicesImplements\ServicesImplements.csproj">
       <Project>{6e8ffc4d-d1da-48da-a8af-f0a88f558e41}</Project>
       <Name>ServicesImplements</Name>
