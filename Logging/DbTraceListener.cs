@@ -57,11 +57,11 @@ namespace Logging
 
         ~DbTraceListener()
         {
-            if (_newArticle != null && _newArticle.Count > 0)
-            {
-                _context.Logger.AddRange(_newArticle);
-                _context.SaveChanges();
-            }
+            //if (_newArticle != null && _newArticle.Count > 0)
+            //{
+            //    _context.Logger.AddRange(_newArticle);
+            //    _context.SaveChanges();
+            //}
         }
     }
 }

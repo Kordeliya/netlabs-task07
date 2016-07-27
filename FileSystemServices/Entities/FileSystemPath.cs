@@ -17,11 +17,12 @@ namespace FileSystemServices
         }
         public string Path { get; private set; }
 
-        public string[] Segments
+        public List<string> Segments
         {
             get
             {
-                return Path.Split("/\\".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                return Path.Split("/\\".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
             }
         }
     }

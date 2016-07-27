@@ -36,7 +36,7 @@ namespace ServicesImplements
             try
             {
                 
-                string[] segments = path.Segments;
+                List<string> segments = path.Segments;
                 if (segments.Count() == 1)
                 {
                     if (Elements.Where(e => e.Name == segments[0]).FirstOrDefault() == null)
@@ -87,7 +87,7 @@ namespace ServicesImplements
             FileSystemElement element;
             try
             {
-                string[] segments = path.Segments;
+                List<string> segments = path.Segments;
                 if (segments.Count() == 1)
                 {
                     element = Elements.Where(e => e.Name == segments[0]).FirstOrDefault();
@@ -135,7 +135,7 @@ namespace ServicesImplements
             FileSystemElement element;
             try
             {
-                string[] segments = pathSource.Segments;
+                List<string> segments = pathSource.Segments;
                 if (segments.Count() == 1)
                 {
                     element = Elements.Where(e => e.Name == segments[0]).FirstOrDefault();
@@ -194,7 +194,7 @@ namespace ServicesImplements
             FileSystemElement element;
             try
             {
-                string[] segments = path.Segments;
+                List<string> segments = path.Segments;
                 if (segments.Count() == 1)
                 {
                     element = Elements.Where(e => e.Name == segments[0]).FirstOrDefault();

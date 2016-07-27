@@ -1,6 +1,7 @@
 ﻿using FileSystemServices;
 using FileSystemServices.Entities;
 using Messages;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Client
                                         Path = path,
                                         Element = element
                                     };
-            BaseResponse response = SendMessage<CreateRequest, BaseResponse>(request);
+            BaseResponse response = SendMessage<CreateRequest, BaseResponse>(request, "create");
 
         }
 
@@ -50,20 +51,19 @@ namespace Client
         }
 
 
-        private static TResponse SendMessage<TRequest,TResponse>(TRequest request)
+        private static TResponse SendMessage<TRequest,TResponse>(TRequest request, string command)
             where TRequest : BaseRequest
             where TResponse : BaseResponse
         {
-           // HttpContent content =  HttpContent.
+            TResponse response = null;
             using (_client = new ClientConnection())
             {
-                
-
-                HttpContent content;
-                HttpResponseMessage response = _client.SendRequest(content).Result;
-                ClientChecker.CheckResponse(response);
+                var json = JsonConvert.SerializeObject(request);
+                StringContent content = new StringContent(json);
+                var resp = _client.SendRequest(content,command).Result;
+               // response = ClientChecker.CheckResponse(_client.SendRequest(content).Result);
             }
-            return _response;
+            return response;
         }
     
     }

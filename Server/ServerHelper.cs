@@ -1,6 +1,7 @@
 ﻿using FileSystemServices;
 using FileSystemServices.Entities;
-using ResponseMessages;
+using Messages;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,9 +23,9 @@ namespace Server
         /// <returns></returns>
         public static byte[] GetResponseBytes(HttpListenerRequest request)
         {
-            string paramRequest = String.Empty;
+            string requestJson = String.Empty;
+            BaseResponse result = null;
             XmlSerializer serializer = null;
-            ResponseFileService result = new ResponseFileService();
             byte[] buffer = null;
             if (!request.HasEntityBody)
                 return null;
@@ -32,24 +33,17 @@ namespace Server
             {
                 using (StreamReader reader = new StreamReader(body, request.ContentEncoding))
                 {
-                    paramRequest = reader.ReadToEnd();
+                    requestJson = reader.ReadToEnd();
                 }
             }
             string command = request.RawUrl.Replace(@"/", String.Empty);
 
-            result = QueryExecution(command, paramRequest);
-            if (result is ResponseFileService<Folder>)
-            {              
-                serializer = new XmlSerializer(typeof(ResponseFileService<Folder>));
-            }
-            else
-            {
-                serializer = new XmlSerializer(typeof(ResponseFileService));
-            }
+            result = QueryExecution(command, requestJson);
+            var jsonResponse = JsonConvert.SerializeObject(result);
 
             using (MemoryStream ms = new MemoryStream())
             {
-                serializer.Serialize(ms, result);
+                serializer.Serialize(ms, jsonResponse);
                 buffer = ms.ToArray();
             }
             return buffer;
@@ -61,90 +55,83 @@ namespace Server
         /// <param name="command">команда</param>
         /// <param name="paramRequest">параметры команды</param>
         /// <returns></returns>
-        private static ResponseFileService QueryExecution(string command, string paramRequest)
+        private static BaseResponse QueryExecution(string command, string jsonRequest)
         {
-            SingleFileService facade = SingleFileService.GetInstance();
-            ResponseFileService result = new ResponseFileService();
+            BaseRequest request = null;
+            BaseResponse result = null;
+            SingleFileService instanceService = SingleFileService.GetInstance();
+
             List<string> path = new List<string>();
             FileSystemPath systemPath = null;
             FileSystemPath systemPathDest = null;
             FileSystemElement elem;
-            if (!String.IsNullOrEmpty(paramRequest))
+            if (!String.IsNullOrEmpty(jsonRequest))
             {
                 try
                 {
                     switch (command)
                     {
-                        case "md":
-                        case "mf":
-                            path = GetPath(paramRequest);
-                            if (path == null)
-                                return null;
-                            systemPath = new FileSystemPath(path[0]);
-                            elem = GetElementSystem(systemPath);
-                            facade.Disk.Create(systemPath, elem);
-                            result = new ResponseFileService
+                        case "create":
+                            request = JsonConvert.DeserializeObject<CreateRequest>(jsonRequest);
+                            instanceService.Disk.Create(request.Path, ((CreateRequest)request).Element);
+                            result = new BaseResponse
                             {
                                 IsSuccess = true
                             };
                             break;
-                        case "rd":
-                        case "del":
-                            path = GetPath(paramRequest);
-                            if (path == null)
-                                return null;
-                            systemPath = new FileSystemPath(path[0]);
-                            facade.Disk.Delete(systemPath);
-                            result = new ResponseFileService
+                        case "delete":
+                            request = JsonConvert.DeserializeObject<BaseRequest>(jsonRequest);
+                            instanceService.Disk.Delete(request.Path);
+                            result = new BaseResponse
                             {
                                 IsSuccess = true
                             };
                             break;
-                        case "copy":
-                            path = GetPath(paramRequest);
-                            if (path == null)
-                                return null;
-                            systemPath = new FileSystemPath(path[0]);
-                            systemPathDest = new FileSystemPath(path[1]);
-                            facade.Disk.Copy(systemPath, systemPathDest);
-                            result = new ResponseFileService
-                            {
-                                IsSuccess = true
-                            };
-                            break;
-                        case "move":
-                            path = GetPath(paramRequest);
-                            if (path == null)
-                                return null;
-                            systemPath = new FileSystemPath(path[0]);
-                            systemPathDest = new FileSystemPath(path[1]);
-                            facade.Disk.Move(systemPath, systemPathDest);
-                            result = new ResponseFileService
-                            {
-                                IsSuccess = true
-                            };
-                            break;
-                        case "print":
-                            path = GetPath(paramRequest);
-                            if (path == null)
-                                return null;
-                            systemPath = new FileSystemPath(path[0]);
-                            Folder folder = (Folder)facade.Disk.GetTree(systemPath);
-                            result = new ResponseFileService<Folder>
-                            {
-                                IsSuccess = true,
-                                Data = folder
-                            };
-                            break;
+                        //case "copy":
+                        //    path = GetPath(paramRequest);
+                        //    if (path == null)
+                        //        return null;
+                        //    systemPath = new FileSystemPath(path[0]);
+                        //    systemPathDest = new FileSystemPath(path[1]);
+                        //    instanceService.Disk.Copy(systemPath, systemPathDest);
+                        //    result = new ResponseFileService
+                        //    {
+                        //        IsSuccess = true
+                        //    };
+                        //    break;
+                        //case "move":
+                        //    path = GetPath(paramRequest);
+                        //    if (path == null)
+                        //        return null;
+                        //    systemPath = new FileSystemPath(path[0]);
+                        //    systemPathDest = new FileSystemPath(path[1]);
+                        //    instanceService.Disk.Move(systemPath, systemPathDest);
+                        //    result = new ResponseFileService
+                        //    {
+                        //        IsSuccess = true
+                        //    };
+                        //    break;
+                        //case "print":
+                        //    path = GetPath(paramRequest);
+                        //    if (path == null)
+                        //        return null;
+                        //    systemPath = new FileSystemPath(path[0]);
+                        //    Folder folder = (Folder)instanceService.Disk.GetTree(systemPath);
+                        //    result = new ResponseFileService<Folder>
+                        //    {
+                        //        IsSuccess = true,
+                        //        Data = folder
+                        //    };
+                        //    break;
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    result = new ResponseFileService
+                    result = new BaseResponse
                     {
                         IsSuccess = false,
-                        Error = ex.Message
+                        ErrorMessage = ex.Message
                     };
                 }
                 return result;
