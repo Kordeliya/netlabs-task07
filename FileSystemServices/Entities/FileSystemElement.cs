@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FileSystemServices.Entities
 {
+    /// <summary>
+    /// Класс для базового элемента файловой системы
+    /// </summary>
     [Serializable]
     public class FileSystemElement
     {

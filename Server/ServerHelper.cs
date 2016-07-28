@@ -122,46 +122,5 @@ namespace Server
                 return null;
         }
 
-        /// <summary>
-        /// Получение писка путей
-        /// </summary>
-        /// <param name="paramRequest"></param>
-        /// <returns></returns>
-        private static List<string> GetPath(string paramRequest)
-        {
-            string[] result = paramRequest.Split("=&".ToCharArray());
-            List<string> newResult = new List<string>();
-            for (var i = 0; i < result.Count(); i++)
-                if (((i + 1) % 2) == 0)
-                    newResult.Add(result[i]);
-            return newResult;
-        }
-
-
-        /// <summary>
-        /// Возвращает по пути FileSystemItem
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private static FileSystemElement GetElementSystem(FileSystemPath path)
-        {
-            FileSystemElement element;
-            if (CheckIsFile(path))
-                element = new FileItem(path.Segments.Last());
-            else
-                element = new Folder(path.Segments.Last());
-            return element;
-        }
-
-        /// <summary>
-        /// Проверка файл ли это
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static bool CheckIsFile(FileSystemPath path)
-        {
-            Regex regex = new Regex(@"[A-Za-z0-9]*\.[a-z0-9]{2,7}");
-            return regex.IsMatch(path.Segments.Last());
-        }
     }
 }

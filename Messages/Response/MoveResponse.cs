@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Messages
 {
+    /// <summary>
+    /// Ответ на перемещение
+    /// </summary>
     [Serializable]
     public class MoveResponse : BaseResponse
     {

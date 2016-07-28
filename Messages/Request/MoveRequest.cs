@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Messages
 {
+    /// <summary>
+    /// ЗАпрос на перемещение
+    /// </summary>
     [Serializable]
     public class MoveRequest : BaseRequest
     {

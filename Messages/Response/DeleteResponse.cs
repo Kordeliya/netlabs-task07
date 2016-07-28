@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Messages
 {
+    /// <summary>
+    /// Ответ на удаление
+    /// </summary>
     [Serializable]
     public class DeleteResponse : BaseResponse
     {

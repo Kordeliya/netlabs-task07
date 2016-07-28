@@ -24,17 +24,12 @@ namespace Server
                 while (listener.IsListening)
                 {
                     byte[] responseBytes = null;
-
                     HttpListenerContext context = listener.GetContext();
-
                     HttpListenerRequest request = context.Request;
-
                     if (request.HttpMethod == "POST")
                     {
                         responseBytes = ServerHelper.GetResponseBytes(request);
-
-                        context.Response.ContentType = @"application/xml; charset=\'UTF-8";
-
+                        context.Response.ContentType = @"application/json";
                         context.Response.ContentLength64 = responseBytes.Length;
                     }
                     using (Stream output = context.Response.OutputStream)

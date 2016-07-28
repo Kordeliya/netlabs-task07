@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Logging
 {
+    /// <summary>
+    /// Класс описания прослушивателя в конфиге
+    /// </summary>
     public class LoggingConfigSection : ConfigurationSection
     {
         [ConfigurationProperty("nCall")]

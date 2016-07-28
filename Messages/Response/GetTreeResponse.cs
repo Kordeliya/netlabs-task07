@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Messages
 {
+    /// <summary>
+    /// Ответ на получение дерева элемента
+    /// </summary>
     [Serializable]
     public class GetTreeResponse : BaseResponse
     {

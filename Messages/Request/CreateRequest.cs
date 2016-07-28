@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Messages
 {
+    /// <summary>
+    /// Запрос на создание
+    /// </summary>
     [Serializable]
     public class CreateRequest: BaseRequest
     {

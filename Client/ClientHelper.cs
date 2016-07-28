@@ -11,14 +11,6 @@ namespace Client
 {
     public static class ClientHelper
     {
-        public static HttpClient CreateHttpClient()
-        {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:6740");
-
-            client.MaxResponseContentBufferSize = 1024 * 1024 * 8;
-            return client;
-        }
 
         /// <summary>
         /// Вывод сообщения об ошибке
@@ -86,7 +78,9 @@ namespace Client
         public static bool CheckCountArgs(string[] args, int count)
         {
             if (args.Count() == count)
+            {
                 return true;
+            }
             return false;
         }
 
@@ -103,7 +97,7 @@ namespace Client
 
 
         /// <summary>
-        /// Информация о дереве
+        /// Вывод информации о дереве
         /// </summary>
         /// <param name="folder"></param>
         public static void PrintTree(FileSystemElement folder)
@@ -115,9 +109,13 @@ namespace Client
                 foreach (var item in ((Folder)folder).Elements)
                 {
                     if (item is Folder)
+                    {
                         countFolders++;
+                    }
                     else
+                    {
                         countFiles++;
+                    }
                 }
                 Console.WriteLine("Данная директория содержит {0} папок, {1} файлов", countFolders, countFiles);
             }

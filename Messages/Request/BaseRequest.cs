@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Messages
 {
+    /// <summary>
+    /// Базовый класс запроса
+    /// </summary>
     [Serializable]
     public class BaseRequest
     {

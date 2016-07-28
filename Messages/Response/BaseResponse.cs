@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Messages
 {
+    /// <summary>
+    /// Класс базового ответа
+    /// </summary>
     [Serializable]
     public class BaseResponse
     {

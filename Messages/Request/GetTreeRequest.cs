@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Messages
 {
+    /// <summary>
+    /// Запрос на получение дерева элемента
+    /// </summary>
     [Serializable]
     public class GetTreeRequest : BaseRequest
     {

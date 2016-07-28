@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Messages
 {
+    /// <summary>
+    /// Запрос на копирование
+    /// </summary>
     [Serializable]
     public class CopyRequest : BaseRequest
     {

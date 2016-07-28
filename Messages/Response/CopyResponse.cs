@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Messages
 {
+    /// <summary>
+    /// Ответ на копирование
+    /// </summary>
     [Serializable]
     public class CopyResponse : BaseResponse
     {
