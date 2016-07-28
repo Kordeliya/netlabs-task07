@@ -47,67 +47,41 @@ namespace Client
                                         continue;
                                     }
                                     FileSystemPath path = new FileSystemPath(commandArgs[1]);
-                                    _proxy.Create(path,new FileItem(path.Segments.Last()));
-
-
-
-                                    //using (_client = new ClientConnection())
-                                    //{
-                                    //    var content = new FormUrlEncodedContent(new[]
-                                    //    {
-                                    //        new KeyValuePair<string, string>("path",  commandArgs[1]),
-                                    //    });
-                                    //    response = _client.SendRequest(content, "md").Result;
-                                    //    ClientChecker.CheckResponse(response);
-                                    //}
+                                    _proxy.Create(path,new Folder(path.Segments.Last()));
+                                }
+                                else
+                                    ClientHelper.WriteErrorMessage();
+                                break;
+                            case "rd":
+                                if (ClientHelper.CheckCountArgs(commandArgs, 2))
+                                {
+                                    if (ClientHelper.CheckIsItFile(commandArgs[1]))
+                                    {
+                                        ClientHelper.WriteErrorMessage();
+                                        continue;
+                                    }
+                                    FileSystemPath path = new FileSystemPath(commandArgs[1]);
+                                    _proxy.Delete(path);
 
                                 }
                                 else
                                     ClientHelper.WriteErrorMessage();
                                 break;
-                            //case "rd":
-                            //    if (ClientHelper.CheckCountArgs(commandArgs, 2))
-                            //    {
-                            //        if (ClientHelper.CheckIsItFile(commandArgs[1]))
-                            //        {
-                            //            ClientHelper.WriteErrorMessage();
-                            //            continue;
-                            //        }
-                            //        using (_client = new ClientConnection())
-                            //        {
-                            //            var content = new FormUrlEncodedContent(new[]
-                            //            {
-                            //                new KeyValuePair<string, string>("path",  commandArgs[1]),
-                            //            });
-                            //            response = _client.SendRequest(content, "rd").Result;
-                            //            ClientChecker.CheckResponse(response);
-                            //        }
-                            //    }
-                            //    else
-                            //        ClientHelper.WriteErrorMessage();
-                            //    break;
-                            //case "mf":
-                            //    if (ClientHelper.CheckCountArgs(commandArgs, 2))
-                            //    {
-                            //        if (!ClientHelper.CheckIsItFile(commandArgs[1]))
-                            //        {
-                            //            ClientHelper.WriteErrorMessage();
-                            //            continue;
-                            //        }
-                            //        using (_client = new ClientConnection())
-                            //        {
-                            //            var content = new FormUrlEncodedContent(new[]
-                            //            {
-                            //                new KeyValuePair<string, string>("path",  commandArgs[1]),
-                            //            });
-                            //            response = _client.SendRequest(content, "mf").Result;
-                            //            ClientChecker.CheckResponse(response);
-                            //        }
+                             case "mf":
+                                if (ClientHelper.CheckCountArgs(commandArgs, 2))
+                                {
+                                    if (!ClientHelper.CheckIsItFile(commandArgs[1]))
+                                    {
+                                        ClientHelper.WriteErrorMessage();
+                                        continue;
+                                    }
+                                    FileSystemPath path = new FileSystemPath(commandArgs[1]);
+                                    _proxy.Create(path, new FileItem(path.Segments.Last()));
 
-                            //    }
-                            //    else
-                            //        ClientHelper.WriteErrorMessage();
-                            //    break;
+                                }
+                                else
+                                    ClientHelper.WriteErrorMessage();
+                                break;
                             //case "del":
                             //    if (ClientHelper.CheckCountArgs(commandArgs, 2))
                             //    {

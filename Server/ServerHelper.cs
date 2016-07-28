@@ -25,7 +25,7 @@ namespace Server
         {
             string requestJson = String.Empty;
             BaseResponse result = null;
-            XmlSerializer serializer = null;
+
             byte[] buffer = null;
             if (!request.HasEntityBody)
                 return null;
@@ -41,11 +41,8 @@ namespace Server
             result = QueryExecution(command, requestJson);
             var jsonResponse = JsonConvert.SerializeObject(result);
 
-            using (MemoryStream ms = new MemoryStream())
-            {
-                serializer.Serialize(ms, jsonResponse);
-                buffer = ms.ToArray();
-            }
+            buffer = Encoding.UTF8.GetBytes(jsonResponse);
+
             return buffer;
         }
 
@@ -59,12 +56,9 @@ namespace Server
         {
             BaseRequest request = null;
             BaseResponse result = null;
+
             SingleFileService instanceService = SingleFileService.GetInstance();
 
-            List<string> path = new List<string>();
-            FileSystemPath systemPath = null;
-            FileSystemPath systemPathDest = null;
-            FileSystemElement elem;
             if (!String.IsNullOrEmpty(jsonRequest))
             {
                 try
@@ -74,55 +68,43 @@ namespace Server
                         case "create":
                             request = JsonConvert.DeserializeObject<CreateRequest>(jsonRequest);
                             instanceService.Disk.Create(request.Path, ((CreateRequest)request).Element);
-                            result = new BaseResponse
+                            result = new CreateResponse
                             {
                                 IsSuccess = true
                             };
                             break;
                         case "delete":
-                            request = JsonConvert.DeserializeObject<BaseRequest>(jsonRequest);
+                            request = JsonConvert.DeserializeObject<DeleteRequest>(jsonRequest);
                             instanceService.Disk.Delete(request.Path);
-                            result = new BaseResponse
+                            result = new DeleteResponse
                             {
                                 IsSuccess = true
                             };
                             break;
-                        //case "copy":
-                        //    path = GetPath(paramRequest);
-                        //    if (path == null)
-                        //        return null;
-                        //    systemPath = new FileSystemPath(path[0]);
-                        //    systemPathDest = new FileSystemPath(path[1]);
-                        //    instanceService.Disk.Copy(systemPath, systemPathDest);
-                        //    result = new ResponseFileService
-                        //    {
-                        //        IsSuccess = true
-                        //    };
-                        //    break;
-                        //case "move":
-                        //    path = GetPath(paramRequest);
-                        //    if (path == null)
-                        //        return null;
-                        //    systemPath = new FileSystemPath(path[0]);
-                        //    systemPathDest = new FileSystemPath(path[1]);
-                        //    instanceService.Disk.Move(systemPath, systemPathDest);
-                        //    result = new ResponseFileService
-                        //    {
-                        //        IsSuccess = true
-                        //    };
-                        //    break;
-                        //case "print":
-                        //    path = GetPath(paramRequest);
-                        //    if (path == null)
-                        //        return null;
-                        //    systemPath = new FileSystemPath(path[0]);
-                        //    Folder folder = (Folder)instanceService.Disk.GetTree(systemPath);
-                        //    result = new ResponseFileService<Folder>
-                        //    {
-                        //        IsSuccess = true,
-                        //        Data = folder
-                        //    };
-                        //    break;
+                        case "copy":
+                            request = JsonConvert.DeserializeObject<CopyRequest>(jsonRequest);
+                            instanceService.Disk.Copy(request.Path,((CopyRequest)request).PathDestination);
+                            result = new CopyResponse
+                            {
+                                IsSuccess = true
+                            };
+                            break;
+                        case "move":
+                            request = JsonConvert.DeserializeObject<CopyRequest>(jsonRequest);
+                            instanceService.Disk.Move(request.Path, ((MoveRequest)request).PathDestination);
+                            result = new MoveResponse
+                            {
+                                IsSuccess = true
+                            };
+                            break;
+                        case "print":
+                            request = JsonConvert.DeserializeObject<GetTreeRequest>(jsonRequest);
+                            instanceService.Disk.GetTree(request.Path);
+                            result = new GetTreeResponse
+                            {
+                                IsSuccess = true
+                            };
+                            break;
                     }
 
                 }

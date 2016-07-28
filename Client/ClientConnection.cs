@@ -40,11 +40,11 @@ namespace Client
             return _response;
         }
 
-        public async Task<HttpResponseMessage> SendRequest(HttpContent content)
-        {
-            _response = await _client.PostAsync(String.Empty, content);
-            return _response;
-        }  
+        //public async Task<HttpResponseMessage> SendRequest(HttpContent content)
+        //{
+        //    _response = await _client.PostAsync(String.Empty, content);
+        //    return _response;
+        //}  
 
     }
 }

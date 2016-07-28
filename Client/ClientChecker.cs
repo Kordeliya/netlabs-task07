@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Messages;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,5 +58,22 @@ namespace Client
         //        Console.WriteLine(">Произошла неизвестная ошибка");
         //    return default(T);
         //}
+        public static TResponse CheckResponse<TResponse>(HttpResponseMessage response)
+            where TResponse : BaseResponse
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var buffer = response.Content.ReadAsByteArrayAsync().Result;
+                string json = ASCIIEncoding.UTF8.GetString(buffer);
+                TResponse jsonResponse = JsonConvert.DeserializeObject<TResponse>(json);
+
+                return jsonResponse;
+            }
+            else
+            {
+                Console.WriteLine(">Произошла неизвестная ошибка");
+                return default(TResponse);
+            }
+        }
     }
 }

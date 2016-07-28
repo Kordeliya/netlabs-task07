@@ -41,8 +41,17 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\BaseRequest.cs" />
+    <Compile Include="Request\CopyRequest.cs" />
     <Compile Include="Request\CreateRequest.cs" />
+    <Compile Include="Request\DeleteRequest.cs" />
+    <Compile Include="Request\GetTreeRequest.cs" />
+    <Compile Include="Request\MoveRequest.cs" />
     <Compile Include="Response\BaseResponse.cs" />
+    <Compile Include="Response\CopyResponse.cs" />
+    <Compile Include="Response\CreateResponse.cs" />
+    <Compile Include="Response\DeleteResponse.cs" />
+    <Compile Include="Response\GetTreeResponse.cs" />
+    <Compile Include="Response\MoveResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileSystemServices\FileSystemServices.csproj">

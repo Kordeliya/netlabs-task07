@@ -26,28 +26,62 @@ namespace Client
                                         Path = path,
                                         Element = element
                                     };
-            BaseResponse response = SendMessage<CreateRequest, BaseResponse>(request, "create");
-
+            CreateResponse response = SendMessage<CreateRequest, CreateResponse>(request, "create");
+            if (response != null && !response.IsSuccess)
+                Console.WriteLine(">{0}",response.ErrorMessage);
         }
 
         public void Delete(FileSystemPath path)
         {
-            throw new NotImplementedException();
+            DeleteRequest request = new DeleteRequest
+            {
+                Path = path
+            };
+            DeleteResponse response = SendMessage<DeleteRequest, DeleteResponse>(request, "delete");
+            if (response != null && !response.IsSuccess)
+                Console.WriteLine(">{0}", response.ErrorMessage);
         }
 
         public void Copy(FileSystemPath pathSource, FileSystemPath pathDestination)
         {
-            throw new NotImplementedException();
+            CopyRequest request = new CopyRequest
+            {
+                Path = pathSource,
+                PathDestination = pathDestination
+            };
+            CopyResponse response = SendMessage<CopyRequest, CopyResponse>(request, "copy");
+            if (response != null && !response.IsSuccess)
+                Console.WriteLine(">{0}", response.ErrorMessage);
         }
 
         public void Move(FileSystemPath pathSource, FileSystemPath pathDestination)
         {
-            throw new NotImplementedException();
+            MoveRequest request = new MoveRequest
+            {
+                Path = pathSource,
+                PathDestination = pathDestination
+            };
+            MoveResponse response = SendMessage<MoveRequest, MoveResponse>(request, "copy");
+            if (response != null && !response.IsSuccess)
+                Console.WriteLine(">{0}", response.ErrorMessage);
         }
 
         public FileSystemElement GetTree(FileSystemPath path)
         {
-            throw new NotImplementedException();
+            GetTreeRequest request = new GetTreeRequest
+            {
+                Path = path,
+            };
+            GetTreeResponse response = SendMessage<GetTreeRequest, GetTreeResponse>(request, "copy");
+            if (response != null && !response.IsSuccess)
+            {
+                Console.WriteLine(">{0}", response.ErrorMessage);
+                return null;
+            }
+            else
+            {
+                return response.Element;
+            }
         }
 
 
@@ -61,7 +95,7 @@ namespace Client
                 var json = JsonConvert.SerializeObject(request);
                 StringContent content = new StringContent(json);
                 var resp = _client.SendRequest(content,command).Result;
-               // response = ClientChecker.CheckResponse(_client.SendRequest(content).Result);
+                response = ClientChecker.CheckResponse<TResponse>(resp);
             }
             return response;
         }
