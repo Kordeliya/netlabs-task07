@@ -101,7 +101,7 @@ namespace Client
                                if (ClientHelper.CheckCountArgs(commandArgs, 3))
                                 {
                                     FileSystemPath path = new FileSystemPath(commandArgs[1]);
-                                    FileSystemPath pathDest = new FileSystemPath(commandArgs[1]);
+                                    FileSystemPath pathDest = new FileSystemPath(commandArgs[2]);
                                     _proxy.Copy(path, pathDest);
                                 }
                                 else
@@ -111,7 +111,7 @@ namespace Client
                                  if (ClientHelper.CheckCountArgs(commandArgs, 3))
                                 {
                                     FileSystemPath path = new FileSystemPath(commandArgs[1]);
-                                    FileSystemPath pathDest = new FileSystemPath(commandArgs[1]);
+                                    FileSystemPath pathDest = new FileSystemPath(commandArgs[2]);
                                     _proxy.Move(path, pathDest);
                                 }
                                 else

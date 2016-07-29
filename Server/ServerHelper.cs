@@ -56,7 +56,7 @@ namespace Server
         {
             BaseRequest request = null;
             BaseResponse result = null;
-
+            FileSystemElement newElement;
             SingleFileService instanceService = SingleFileService.GetInstance();
 
             if (!String.IsNullOrEmpty(jsonRequest))
@@ -67,7 +67,15 @@ namespace Server
                     {
                         case "create":
                             request = JsonConvert.DeserializeObject<CreateRequest>(jsonRequest);
-                            instanceService.Disk.Create(request.Path, ((CreateRequest)request).Element);
+                            if (CheckIsItFile(request.Path))
+                            {
+                                newElement = new FileItem { Name = ((CreateRequest)request).Element.Name, CreateDate = ((CreateRequest)request).Element.CreateDate };
+                            }
+                            else
+                            {
+                                newElement = new Folder(((CreateRequest)request).Element.Name);
+                            }
+                            instanceService.Disk.Create(request.Path, newElement);
                             result = new CreateResponse
                             {
                                 IsSuccess = true
@@ -120,6 +128,12 @@ namespace Server
             }
             else
                 return null;
+        }
+
+        private static bool CheckIsItFile(FileSystemPath fileSystemPath)
+        {
+            Regex regex = new Regex(@"[\s\S]*\.[a-z0-9]{2,7}");
+            return regex.IsMatch(fileSystemPath.Path);
         }
 
     }
