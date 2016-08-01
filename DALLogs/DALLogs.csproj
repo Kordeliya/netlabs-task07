@@ -56,7 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logger.cs" />
+    <Compile Include="LoggerMessages.cs" />
     <Compile Include="MappingContext.cs" />
     <Compile Include="Migrations\201607251600309_1.cs" />
     <Compile Include="Migrations\201607251600309_1.Designer.cs">

@@ -10,7 +10,7 @@ namespace Messages
     /// Класс базового ответа
     /// </summary>
     [Serializable]
-    public class BaseResponse
+    public abstract class BaseResponse
     {
         public bool IsSuccess { get; set; }
 

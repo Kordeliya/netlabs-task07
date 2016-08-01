@@ -6,14 +6,14 @@ using System.Text;
 
 namespace DALLogs
 {
-    [Table("Loggers")]
-    public class Logger
+    [Table("LoggerMessages")]
+    public class LoggerMessages
     {
-        public Logger()
+        public LoggerMessages()
         {
         }
 
-        public Logger(string type)
+        public LoggerMessages(string type)
         {
             Type = type;
         }

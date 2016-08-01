@@ -47,7 +47,6 @@
     <Compile Include="Entities\FileItem.cs" />
     <Compile Include="Entities\FileSystemElement.cs" />
     <Compile Include="Entities\Folder.cs" />
-    <Compile Include="Entities\FileSystemPath.cs" />
     <Compile Include="IVirtualFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

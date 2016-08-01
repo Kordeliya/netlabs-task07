@@ -9,7 +9,7 @@ namespace DALLogs
 {
     public class MappingContext : DbContext
     {
-        public DbSet<Logger> Logger { get; set; }
+        public DbSet<LoggerMessages> Logger { get; set; }
 
         #region Constructors
 

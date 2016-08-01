@@ -30,19 +30,22 @@ namespace ServicesImplements
         /// </summary>
         /// <param name="path">путь</param>
         /// <param name="element">элемент</param>
-        public void Create(FileSystemPath path, FileSystemElement element)
+        public void Create(Uri path, FileSystemElement element)
         {
             Trace.TraceInformation("Create: {0}", path);
             try
             {
-                
-                List<string> segments = path.Segments;
+                List<string> segments = GetSegments(path).ToList();
                 if (segments.Count() == 1)
                 {
                     if (Elements.Where(e => e.Name == segments[0]).FirstOrDefault() == null)
+                    {
                         Elements.Add(element);
+                    }
                     else
-                        throw new HelperException(3);
+                    {
+                        throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
+                    }
                 }
                 else if (segments.Count() > 1)
                 {
@@ -50,9 +53,13 @@ namespace ServicesImplements
                     for (var i = 2; i < segments.Count(); i++)
                     {
                         if (elem != null && elem is Folder)
-                            elem = ((Folder)elem).Elements.Where(e => e.Name == segments[i-1]).FirstOrDefault();
+                        {
+                            elem = ((Folder)elem).Elements.Where(e => e.Name == segments[i - 1]).FirstOrDefault();
+                        }
                         else
-                            throw new HelperException(2);
+                        {
+                            throw new FileSystemException("Невозможно выполнить действие.Не существует указанного пути");
+                        }
                     }
                     if (elem != null)
                     {
@@ -62,18 +69,24 @@ namespace ServicesImplements
                             ((Folder)elem).Elements.Add(element);
                         }
                         else
-                            throw new HelperException(3);
-                    }       
+                        {
+                            throw new FileSystemException("Элемент с таким названием уже существует по указанному пути");
+                        }
+                    }
                     else
-                        throw new HelperException(2);
+                    {
+                        throw new FileSystemException("Невозможно выполнить действие.Не существует указанного пути");
+                    }
 
                 }
                 else
-                    throw new HelperException(4);
+                {
+                    throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
+                }
             }
             catch (InvalidCastException ex)
             {
-                throw new HelperException(1);
+                throw new FileSystemException("Неверно прописанный путь");
             }
         }
 
@@ -81,20 +94,24 @@ namespace ServicesImplements
         /// Удалить элемент
         /// </summary>
         /// <param name="path">путь</param>
-        public void Delete(FileSystemPath path)
+        public void Delete(Uri path)
         {
             Trace.TraceInformation("Delete: {0}", path);
             FileSystemElement element;
             try
             {
-                List<string> segments = path.Segments;
+                List<string> segments = GetSegments(path).ToList();
                 if (segments.Count() == 1)
                 {
                     element = Elements.Where(e => e.Name == segments[0]).FirstOrDefault();
                     if (element != null)
+                    {
                         Elements.Remove(element);
+                    }
                     else
-                        throw new HelperException(4);
+                    {
+                        throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
+                    }
                 }
                 else if (segments.Count() > 1)
                 {
@@ -103,24 +120,36 @@ namespace ServicesImplements
                     for (var i = 2; i <= segments.Count(); i++)
                     {
                         if (element != null && elementParent is Folder)
-                            element = ((Folder)elementParent).Elements.Where(e => e.Name == segments[i-1]).FirstOrDefault();
+                        {
+                            element = ((Folder)elementParent).Elements.Where(e => e.Name == segments[i - 1]).FirstOrDefault();
+                        }
                         else
-                            throw new HelperException(2);
+                        {
+                            throw new FileSystemException("Невозможно выполнить действие.Не существует указанного пути");
+                        }
                         if (i != (segments.Count()))
+                        {
                             elementParent = element;
+                        }
 
                     }
-                    if (elementParent!= null && element != null)
+                    if (elementParent != null && element != null)
+                    {
                         ((Folder)elementParent).Elements.Remove(element);
+                    }
                     else
-                        throw new HelperException(2);
+                    {
+                        throw new FileSystemException("Невозможно выполнить действие.Не существует указанного пути");
+                    }
                 }
                 else
-                    throw new HelperException(4);
+                {
+                    throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
+                }
             }
             catch (InvalidCastException ex)
             {
-                throw new HelperException(1);
+                throw new FileSystemException("Неверно прописанный путь");
             }
         }
 
@@ -129,19 +158,22 @@ namespace ServicesImplements
         /// </summary>
         /// <param name="pathSource">путь к источнику</param>
         /// <param name="pathDestination">путь к месту назначения</param>
-        public void Copy(FileSystemPath pathSource, FileSystemPath pathDestination)
+        public void Copy(Uri pathSource, Uri pathDestination)
         {
             Trace.TraceInformation("Copy from {0} to {1}", pathSource, pathDestination);
+            Uri newUri = null;
             FileSystemElement element;
             try
             {
-                List<string> segments = pathSource.Segments;
+                List<string> segments = GetSegments(pathSource).ToList();
                 if (segments.Count() == 1)
                 {
                     element = Elements.Where(e => e.Name == segments[0]).FirstOrDefault();
 
                     if (element == null)
-                        throw new HelperException(4);
+                    {
+                        throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
+                    }
                 }
                 else if (segments.Count() > 1)
                 {
@@ -150,24 +182,39 @@ namespace ServicesImplements
                     for (var i = 2; i <= segments.Count(); i++)
                     {
                         if (element != null && elementParent is Folder)
+                        {
                             element = ((Folder)elementParent).Elements.Where(e => e.Name == segments[i - 1]).FirstOrDefault();
+                        }
                         else
-                            throw new HelperException(2);
+                        {
+                            throw new FileSystemException("Невозможно выполнить действие.Не существует указанного пути");
+                        }
                         if (i != (segments.Count()))
+                        {
                             elementParent = element;
+                        }
 
                     }
                     if (elementParent == null && element == null)
-                        throw new HelperException(4);
+                    {
+                        throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
+                    }
                 }
                 else
-                    throw new HelperException(4);
-                this.Create(new FileSystemPath(String.Format("{0}/{1}", pathDestination.Path, element.Name)), element);
+                {
+                    throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
+                }
+                if (element is FileItem)
+                    newUri = pathDestination;
+                else if(element is Folder)
+                    newUri = new Uri(String.Format("{0}/{1}", pathDestination.ToString(), element.Name), UriKind.Relative);
+                    
+                this.Create(newUri, element);
 
             }
             catch (InvalidCastException ex)
             {
-                throw new HelperException(1);
+                throw new FileSystemException("Неверно прописанный путь");
             }
         }
 
@@ -176,7 +223,7 @@ namespace ServicesImplements
         /// </summary>
         /// <param name="pathSource">путь к источнику</param>
         /// <param name="pathDestination">путь к месту назначения</param>
-        public void Move(FileSystemPath pathSource, FileSystemPath pathDestination)
+        public void Move(Uri pathSource, Uri pathDestination)
         {
             Trace.TraceInformation("Move from {0} to {1}", pathSource, pathDestination);
             this.Copy(pathSource, pathDestination);
@@ -188,13 +235,13 @@ namespace ServicesImplements
         /// </summary>
         /// <param name="path">путь к элементу</param>
         /// <returns></returns>
-        public FileSystemElement GetTree(FileSystemPath path)
+        public FileSystemElement GetTree(Uri path)
         {
             Trace.TraceInformation("GetTree: {0}", path);
             FileSystemElement element;
             try
             {
-                List<string> segments = path.Segments;
+                List<string> segments = GetSegments(path).ToList();
                 if (segments.Count() == 1)
                 {
                     element = Elements.Where(e => e.Name == segments[0]).FirstOrDefault();
@@ -202,7 +249,7 @@ namespace ServicesImplements
                     if (element != null && element is Folder)
                         return element;
                     else
-                        throw new HelperException(4);
+                        throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
                 }
                 else if (segments.Count() > 1)
                 {
@@ -212,19 +259,38 @@ namespace ServicesImplements
                         if (element != null && element is Folder)
                             element = ((Folder)element).Elements.Where(e => e.Name == segments[i]).FirstOrDefault();
                         else
-                            throw new HelperException(2);
+                            throw new FileSystemException("Невозможно выполнить действие.Не существует указанного пути");
                     }
                     if (element != null && element is Folder)
                         return element;
                     else
-                        throw new HelperException(4);
+                        throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
                 }
                 else
-                    throw new HelperException(4);
+                    throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
             }
             catch (InvalidCastException ex)
             {
-                throw new HelperException(1);
+                throw new FileSystemException("Неверно прописанный путь");
+            }
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private static string[] GetSegments(Uri path)
+        {
+            if (path != null)
+            {
+                return path.OriginalString.Split("/\\".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+            }
+            else
+            {
+                return null;
             }
         }
     }

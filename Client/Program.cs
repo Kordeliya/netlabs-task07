@@ -46,8 +46,16 @@ namespace Client
                                         ClientHelper.WriteErrorMessage();
                                         continue;
                                     }
-                                    FileSystemPath path = new FileSystemPath(commandArgs[1]);
-                                    _proxy.Create(path,new Folder(path.Segments.Last()));
+                                    Uri path = new Uri(commandArgs[1], UriKind.Relative);
+                                    string[] segments = ClientHelper.GetSegments(path);
+                                    if (segments != null)
+                                    {
+                                        _proxy.Create(path, new Folder(segments.Last()));
+                                    }
+                                    else
+                                    {
+                                        ClientHelper.WriteErrorMessage();
+                                    }
                                 }
                                 else
                                     ClientHelper.WriteErrorMessage();
@@ -60,7 +68,7 @@ namespace Client
                                         ClientHelper.WriteErrorMessage();
                                         continue;
                                     }
-                                    FileSystemPath path = new FileSystemPath(commandArgs[1]);
+                                    Uri path = new Uri(commandArgs[1], UriKind.Relative);
                                     _proxy.Delete(path);
 
                                 }
@@ -75,7 +83,7 @@ namespace Client
                                         ClientHelper.WriteErrorMessage();
                                         continue;
                                     }
-                                    FileSystemPath path = new FileSystemPath(commandArgs[1]);
+                                    Uri path = new Uri(commandArgs[1], UriKind.Relative);
                                     _proxy.Create(path, new FileItem(path.Segments.Last()));
 
                                 }
@@ -90,7 +98,7 @@ namespace Client
                                         ClientHelper.WriteErrorMessage();
                                         continue;
                                     }
-                                    FileSystemPath path = new FileSystemPath(commandArgs[1]);
+                                    Uri path = new Uri(commandArgs[1], UriKind.Relative);
                                     _proxy.Delete(path);
 
                                 }
@@ -100,8 +108,8 @@ namespace Client
                              case "copy":
                                if (ClientHelper.CheckCountArgs(commandArgs, 3))
                                 {
-                                    FileSystemPath path = new FileSystemPath(commandArgs[1]);
-                                    FileSystemPath pathDest = new FileSystemPath(commandArgs[2]);
+                                    Uri path = new Uri(commandArgs[1], UriKind.Relative);
+                                    Uri pathDest = new Uri(commandArgs[2], UriKind.Relative);
                                     _proxy.Copy(path, pathDest);
                                 }
                                 else
@@ -110,8 +118,8 @@ namespace Client
                              case "move":
                                  if (ClientHelper.CheckCountArgs(commandArgs, 3))
                                 {
-                                    FileSystemPath path = new FileSystemPath(commandArgs[1]);
-                                    FileSystemPath pathDest = new FileSystemPath(commandArgs[2]);
+                                    Uri path = new Uri(commandArgs[1], UriKind.Relative);
+                                    Uri pathDest = new Uri(commandArgs[2], UriKind.Relative);
                                     _proxy.Move(path, pathDest);
                                 }
                                 else
@@ -125,7 +133,7 @@ namespace Client
                                         ClientHelper.WriteErrorMessage();
                                         continue;
                                     }
-                                    FileSystemPath path = new FileSystemPath(commandArgs[1]);
+                                    Uri path = new Uri(commandArgs[1], UriKind.Relative);
                                     Folder folder = (Folder)_proxy.GetTree(path);
                                     ClientHelper.PrintTree(folder);
                                 }

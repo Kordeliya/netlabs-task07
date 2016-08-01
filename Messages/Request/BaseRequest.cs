@@ -11,8 +11,8 @@ namespace Messages
     /// Базовый класс запроса
     /// </summary>
     [Serializable]
-    public class BaseRequest
+    public abstract class BaseRequest
     {
-        public FileSystemPath Path { get; set; }
+        public Uri Path { get; set; }
     }
 }

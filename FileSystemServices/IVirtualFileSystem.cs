@@ -14,34 +14,34 @@ namespace FileSystemServices
         /// </summary>
         /// <param name="path">путь</param>
         /// <param name="element"></param>
-        void Create(FileSystemPath path, FileSystemElement element);
+        void Create(Uri path, FileSystemElement element);
 
         /// <summary>
         /// Удаление элемента
         /// </summary>
         /// <param name="path">путь</param>
         /// <param name="element"></param>
-        void Delete(FileSystemPath path);
+        void Delete(Uri path);
 
         /// <summary>
         /// Копирование элемента
         /// </summary>
         /// <param name="pathSource">источник</param>
         /// <param name="pathDestination">точка назначения</param>
-        void Copy(FileSystemPath pathSource, FileSystemPath pathDestination);
+        void Copy(Uri pathSource, Uri pathDestination);
 
         /// <summary>
         /// Перемещение элемента
         /// </summary>
         /// <param name="pathSource">источник</param>
         /// <param name="pathDestination">точка назначения</param>
-        void Move(FileSystemPath pathSource, FileSystemPath pathDestination);
+        void Move(Uri pathSource, Uri pathDestination);
 
         /// <summary>
         /// Получение древа
         /// </summary>
         /// <param name="path">путь</param>
         /// <returns></returns>
-        FileSystemElement GetTree(FileSystemPath path);
+        FileSystemElement GetTree(Uri path);
     }
 }

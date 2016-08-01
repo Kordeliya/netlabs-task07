@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientChecker.cs" />
+    <Compile Include="ResponceChecker.cs" />
     <Compile Include="ClientConnection.cs" />
     <Compile Include="ClientHelper.cs" />
     <Compile Include="FileSystemProxy.cs" />

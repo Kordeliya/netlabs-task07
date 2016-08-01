@@ -27,7 +27,7 @@ namespace Client
         /// </summary>
         /// <param name="path"></param>
         /// <param name="element"></param>
-        public void Create(FileSystemPath path, FileSystemServices.Entities.FileSystemElement element)
+        public void Create(Uri path, FileSystemServices.Entities.FileSystemElement element)
         {
             CreateRequest request = new CreateRequest
                                     {
@@ -45,7 +45,7 @@ namespace Client
         /// Удаление элемента
         /// </summary>
         /// <param name="path"></param>
-        public void Delete(FileSystemPath path)
+        public void Delete(Uri path)
         {
             DeleteRequest request = new DeleteRequest
             {
@@ -63,7 +63,7 @@ namespace Client
         /// </summary>
         /// <param name="pathSource">источник</param>
         /// <param name="pathDestination">пункт назначения</param>
-        public void Copy(FileSystemPath pathSource, FileSystemPath pathDestination)
+        public void Copy(Uri pathSource, Uri pathDestination)
         {
             CopyRequest request = new CopyRequest
             {
@@ -82,7 +82,7 @@ namespace Client
         /// </summary>
         /// <param name="pathSource">источник</param>
         /// <param name="pathDestination">назначение</param>
-        public void Move(FileSystemPath pathSource, FileSystemPath pathDestination)
+        public void Move(Uri pathSource, Uri pathDestination)
         {
             MoveRequest request = new MoveRequest
             {
@@ -101,7 +101,7 @@ namespace Client
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public FileSystemElement GetTree(FileSystemPath path)
+        public FileSystemElement GetTree(Uri path)
         {
             GetTreeRequest request = new GetTreeRequest
             {
@@ -138,7 +138,7 @@ namespace Client
                 var json = JsonConvert.SerializeObject(request);
                 StringContent content = new StringContent(json);
                 var resp = _client.SendRequest(content,command).Result;
-                response = ClientChecker.CheckResponse<TResponse>(resp);
+                response = ResponceChecker.CheckResponse<TResponse>(resp);
             }
             return response;
         }

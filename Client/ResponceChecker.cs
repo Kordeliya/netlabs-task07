@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace Client
 {
-    public static class ClientChecker
+    public static class ResponceChecker
     {
         /// <summary>
         /// Проверка ответа от сервиса

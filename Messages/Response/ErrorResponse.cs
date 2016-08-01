@@ -1,5 +1,4 @@
-﻿using FileSystemServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +7,10 @@ using System.Threading.Tasks;
 namespace Messages
 {
     /// <summary>
-    /// ЗАпрос на перемещение
+    /// Ответ с ошибкой
     /// </summary>
     [Serializable]
-    public class MoveRequest : BaseRequest
+    public class ErrorResponse : BaseResponse
     {
-        public Uri PathDestination { get; set; }
     }
 }

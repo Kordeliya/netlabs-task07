@@ -14,7 +14,10 @@ using System.Xml.Serialization;
 
 namespace Server
 {
-    public static class ServerHelper
+    /// <summary>
+    /// Обработчик запроса
+    /// </summary>
+    public static class RequestHandler
     {
         /// <summary>
         /// Формирование ответа в байтах
@@ -118,7 +121,7 @@ namespace Server
                 }
                 catch (Exception ex)
                 {
-                    result = new BaseResponse
+                    result = new ErrorResponse
                     {
                         IsSuccess = false,
                         ErrorMessage = ex.Message
@@ -130,10 +133,10 @@ namespace Server
                 return null;
         }
 
-        private static bool CheckIsItFile(FileSystemPath fileSystemPath)
+        private static bool CheckIsItFile(Uri fileSystemPath)
         {
             Regex regex = new Regex(@"[\s\S]*\.[a-z0-9]{2,7}");
-            return regex.IsMatch(fileSystemPath.Path);
+            return regex.IsMatch(fileSystemPath.ToString());
         }
 
     }

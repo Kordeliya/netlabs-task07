@@ -13,6 +13,6 @@ namespace Messages
     [Serializable]
     public class CopyRequest : BaseRequest
     {
-        public FileSystemPath PathDestination { get; set; }
+        public Uri PathDestination { get; set; }
     }
 }

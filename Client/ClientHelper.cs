@@ -122,5 +122,22 @@ namespace Client
             else
                 Console.WriteLine("Директория не найдена!");
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string[] GetSegments(Uri path)
+        {
+            if (path != null)
+            {
+                return path.OriginalString.Split("/\\".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

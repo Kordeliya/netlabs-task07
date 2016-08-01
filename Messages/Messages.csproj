@@ -50,6 +50,7 @@
     <Compile Include="Response\CopyResponse.cs" />
     <Compile Include="Response\CreateResponse.cs" />
     <Compile Include="Response\DeleteResponse.cs" />
+    <Compile Include="Response\ErrorResponse.cs" />
     <Compile Include="Response\GetTreeResponse.cs" />
     <Compile Include="Response\MoveResponse.cs" />
   </ItemGroup>

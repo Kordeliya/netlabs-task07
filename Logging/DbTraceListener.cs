@@ -16,13 +16,8 @@ namespace Logging
     public class DbTraceListener : TraceListener
     {
         MappingContext _context = null;
-        private List<Logger> _newArticle = new List<Logger>();
-
-
+        private List<LoggerMessages> _newArticle = new List<LoggerMessages>();
         private int NCall { get; set; }
-
-        private int CurrentCall { get; set; }
-
 
         public DbTraceListener(string configSectionName)
         {
@@ -35,7 +30,7 @@ namespace Logging
 
         public override void Write(string message)
         {
-            var newLine = new Logger(message);
+            var newLine = new LoggerMessages(message);
             _newArticle.Add(newLine);
         }
 
@@ -43,15 +38,12 @@ namespace Logging
         {
             _newArticle.Last().Message = message;
             _newArticle.Last().CreateDate = DateTime.Now;
-            CurrentCall++;
 
-            if (NCall == CurrentCall)
+            if (NCall == _newArticle.Count())
             {
-                //запись в базу и затем CurrentCall обнуляется
                 _context.Logger.AddRange(_newArticle);
                 _context.SaveChanges();
-                _newArticle = new List<Logger>();
-                CurrentCall = 0;
+                _newArticle = new List<LoggerMessages>();
             }
         }
 
