@@ -204,10 +204,10 @@ namespace ServicesImplements
                 {
                     throw new FileSystemException("Элемент с таким названием не существует по указанному пути");
                 }
-                if (element is FileItem)
-                    newUri = pathDestination;
-                else if(element is Folder)
-                    newUri = new Uri(String.Format("{0}/{1}", pathDestination.ToString(), element.Name), UriKind.Relative);
+                //if (element is FileItem)
+                //    newUri = pathDestination;
+                //else if(element is Folder)
+                newUri = new Uri(String.Format("{0}/{1}", pathDestination.ToString(), element.Name), UriKind.Relative);
                     
                 this.Create(newUri, element);
 

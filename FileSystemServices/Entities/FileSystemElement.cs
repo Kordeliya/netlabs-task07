@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace FileSystemServices.Entities
 {
@@ -10,12 +11,12 @@ namespace FileSystemServices.Entities
     /// Класс для базового элемента файловой системы
     /// </summary>
     [Serializable]
+    [XmlInclude(typeof(Folder))]
     public class FileSystemElement
     {
         public FileSystemElement()
         {
         }
-
         public FileSystemElement(string name)
         {
             Name = name;

@@ -82,9 +82,10 @@ namespace Client
                                     {
                                         ClientHelper.WriteErrorMessage();
                                         continue;
-                                    }
+                                    }               
                                     Uri path = new Uri(commandArgs[1], UriKind.Relative);
-                                    _proxy.Create(path, new FileItem(path.Segments.Last()));
+                                    string[] segments = ClientHelper.GetSegments(path);
+                                    _proxy.Create(path, new FileItem(segments.Last()));
 
                                 }
                                 else
